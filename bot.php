@@ -1,7 +1,10 @@
 <?php
 $bot_token = "6801245630:AAGpFsiY1fPa9vtrMpTotg2G9iooA4sPkP0";
 $chat_id = "6335286775";
-$file_path = realpath("media/Free_Test_Data_2.38MB_MKV.mkv");
+$file_path = realpath("media/2.mkv");
+
+// Encode the URL if needed
+$file_url = urlencode($file_path);
 
 // Initialize cURL session
 $ch = curl_init();
