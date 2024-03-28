@@ -1,40 +1,15 @@
 <?php
-$bot_token = "6801245630:AAGpFsiY1fPa9vtrMpTotg2G9iooA4sPkP0";
-$chat_id = "6335286775";
-$file_path = realpath("media/2.mkv");
+$target_url = file_get_contents('http://nitroflare.com/plugins/fileupload/getServer');
 
-// Encode the URL if needed
-$file_url = urlencode($file_path);
+$file = realpath('media/1.mp4');
+$post = array('files' => curl_file_create($file), 'user' => '732943e838e3513cdab1cbeb1664da90e9be13e6');
 
-// Initialize cURL session
 $ch = curl_init();
+curl_setopt($ch, CURLOPT_URL,$target_url);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$result = curl_exec ($ch);
+curl_close ($ch);
 
-// Set cURL options
-curl_setopt($ch, CURLOPT_URL, "https://api.telegram.org/bot" . $bot_token . "/sendDocument");
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_POST, 1);
-curl_setopt($ch, CURLOPT_POSTFIELDS, [
-    'chat_id' => $chat_id,
-    'document' => new CURLFile($file_path)
-]);
-
-// Execute the cURL session
-$response = curl_exec($ch);
-
-// Check for errors
-if ($response === false) {
-    echo 'Curl error: ' . curl_error($ch);
-} else {
-    // Decode the JSON response
-    $result = json_decode($response, true);
-    // Check if the request was successful
-    if ($result['ok']) {
-        echo 'Document sent successfully.';
-    } else {
-        echo 'Error: ' . $result['description'];
-    }
-}
-
-// Close cURL session
-curl_close($ch);
-?>
+var_dump(json_decode($result));
